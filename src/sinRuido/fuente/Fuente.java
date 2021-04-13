@@ -1,6 +1,7 @@
 package sinRuido.fuente;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Fuente {
 
@@ -51,18 +52,20 @@ public class Fuente {
 	public String decode(ArrayList<Short> lista) {
 		
 		StringBuilder car = new StringBuilder("");
+		ArrayList<Short> num = new ArrayList<Short>();
 		StringBuilder resultado = new StringBuilder("");
 		int posicion;
+		//System.out.println(lista.toString());
 		
 		for(int i=0; i<lista.size(); i++) {
 			
-			if((i+1)%7 == 0 && i!= 0) {
-				car.append(lista.get(i).toString());
-				posicion = qToInt(2,car.reverse());
+			if((i+1)%2 == 0 && i!= 0) {
+				num.add(lista.get(i));
+				posicion = qToInt(11,num);
 				resultado.append(this.alf.get(posicion));
-				car = new StringBuilder("");
+				num = new ArrayList<Short>();
 			}else {
-				car.append(lista.get(i).toString());
+				num.add(lista.get(i));
 			}
 			
 		}
@@ -70,15 +73,15 @@ public class Fuente {
 		return resultado.toString();
 	}
 	
-	private int qToInt(int q, StringBuilder cad) {
+	private int qToInt(int q, ArrayList<Short> array) {
 		
 		int resultado = 0;
-		
-		for(int i=0; i<cad.length(); i++) {
-			if(cad.charAt(i) == '1') {
-				resultado += Math.pow(q, i);
-			}
+		System.out.println(array.toString());
+		Collections.reverse(array);
+		for(int i=array.size()-1; i>=0; i--) {
+			resultado += Math.pow(q, i) * Integer.valueOf(array.get(i));
 		}
+		System.out.println(resultado);
 		return resultado;
 		
 	}

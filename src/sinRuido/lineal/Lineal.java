@@ -20,13 +20,15 @@ public class Lineal {
 			if(pos < 3) {
 				this.listaDecodificada.add(this.lista.get(i));
 			}else {
-				if (pos == 5) {
+				if (pos == 6) {
 					pos = -1;
 				}
 			}
 			
 			pos++;
 		}
+		
+		//System.out.println(lista.size()%9);
 		
 		return this.listaDecodificada;
 	}

@@ -56,7 +56,7 @@ public class Main {
 	 */
 	private static String inicioPrograma() {
 		StringBuffer cad = new StringBuffer("");
-		cad.append("CODIFICACION BINARIA LINEAL SIN RUIDO");
+		cad.append("CODIFICACION Q-ARIA LINEAL SIN RUIDO");
 		cad.append("\n");
 		return cad.toString();
 	}

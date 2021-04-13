@@ -41,6 +41,7 @@ public class Decodificacion {
 		String[] res = listaSinCorchetes.split(",");
 		
 		for(String s : res) {
+			//System.out.println(s);
 			this.list.add(Short.valueOf(s));
 		}
 	}
