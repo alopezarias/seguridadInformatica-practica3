@@ -11,14 +11,14 @@ import sinRuido.Decodificacion;
 import sinRuido.fuente.Fuente;
 import sinRuido.lineal.Lineal;
 
-
 public class Main {
 
 	private static Fuente fuente;
 	private static Lineal lineal;
 	private static Codificacion codificacion;
 	private static Decodificacion decodificacion;
-	
+	private static String data;
+
 	/**
 	 * Para poder leer elementos por consola
 	 */
@@ -34,10 +34,11 @@ public class Main {
 		System.out.println(inicioPrograma());
 		String texto;
 		try {
-			texto = introducirArchivo();
+			introducirArchivo("resources/data");
+			texto = seleccionarDelArchivo("alfabeto");// introducirArchivo();
 			fuente = new Fuente(texto);
 			lineal = new Lineal();
-			int n = escogerSplit();
+			int n = 1;// escogerSplit();
 			fuente.run(n);
 			codificacion = new Codificacion(fuente, lineal);
 			decodificacion = new Decodificacion(fuente, lineal);
@@ -48,7 +49,23 @@ public class Main {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public static String seleccionarDelArchivo(String id) {
+
+		switch (id) {
+		case "alfabeto":
+			return data.substring(data.indexOf("\"") + 1, data.indexOf("\"", data.indexOf("\"") + 1));
+		case "q":
+			return data.substring(data.indexOf("p=") + 2, data.indexOf("\n", data.indexOf("p=") + 1));
+		case "mensaje":
+			return data.substring(data.indexOf("lista=[") + 7, data.lastIndexOf("]"));
+		case "matriz":
+			return data.substring(data.indexOf("{") + 1, data.indexOf("}"));
+		default:
+			return null;
+		}
+	}
+
 	/**
 	 * Mensaje de inicio del programa
 	 * 
@@ -67,12 +84,12 @@ public class Main {
 	 * @return texto contenido en el archivo
 	 * @throws IOException
 	 */
-	private static String introducirArchivo() throws IOException {
+	private static void introducirArchivo(String ruta) throws IOException {
 		System.out.println("\nINTRODUCE LA RUTA ABSOLUTA DEL ARCHIVO CON EL TEXTO:\n");
-		String ruta = in.nextLine();
+		// String ruta = "../resources/data";//in.nextLine();
 		String linea;
 		StringBuffer contenido = new StringBuffer("");
-		String texto;
+		//String texto;
 
 		try {
 			FileReader f = new FileReader(ruta, StandardCharsets.UTF_8);
@@ -88,8 +105,7 @@ public class Main {
 			throw e;
 		}
 
-		texto = contenido.substring(contenido.indexOf("\"") + 1, contenido.lastIndexOf("\""));
-		return texto;
+		data = contenido.toString();
 	}
 
 	/**
@@ -97,22 +113,22 @@ public class Main {
 	 * 
 	 * @return Numero de caracteres que tendrá el simbolo
 	 */
-	private static int escogerSplit() {
-		System.out.println("ESCOGE LA LONGITUD DE LOS SÍMBOLOS: \n");
-		String l = in.nextLine();
-		boolean b = false;
-		while (!b) {
-			try {
-				Integer.parseInt(l);
-				b = true;
-			} catch (NumberFormatException excepcion) {
-				System.out.println("INTRODUCE UN NUMERO, POR FAVOR: \n");
-				l = in.nextLine();
-			}
-		}
-
-		return Integer.valueOf(l);
-	}
+//	private static int escogerSplit() {
+//		System.out.println("ESCOGE LA LONGITUD DE LOS SÍMBOLOS: \n");
+//		String l = in.nextLine();
+//		boolean b = false;
+//		while (!b) {
+//			try {
+//				Integer.parseInt(l);
+//				b = true;
+//			} catch (NumberFormatException excepcion) {
+//				System.out.println("INTRODUCE UN NUMERO, POR FAVOR: \n");
+//				l = in.nextLine();
+//			}
+//		}
+//
+//		return Integer.valueOf(l);
+//	}
 
 	/**
 	 * Opciones que se pueden realizar en el programa
@@ -167,4 +183,3 @@ public class Main {
 	}
 
 }
-

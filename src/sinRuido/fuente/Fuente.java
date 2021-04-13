@@ -3,13 +3,18 @@ package sinRuido.fuente;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import vista.Main;
+
 public class Fuente {
 
 	private String texto;
 	private ArrayList<String> alf = new ArrayList<String>();
-	
-	public Fuente (String texto) {
+	private int q;
+	private int bloque;
+
+	public Fuente(String texto) {
 		this.texto = texto;
+		this.q = Integer.valueOf(Main.seleccionarDelArchivo("q"));
 	}
 
 	/**
@@ -17,6 +22,12 @@ public class Fuente {
 	 */
 	public void run(int simTam) {
 		this.simbolSplit(this.texto, simTam);
+		this.bloque = calcularBloqueMinimo(alf.size(), this.q);
+	}
+
+	private int calcularBloqueMinimo(int n, int q) {
+		double result = Math.log(n) / Math.log(q);
+		return (int) Math.ceil(result);
 	}
 
 	/**
@@ -48,41 +59,41 @@ public class Fuente {
 			this.alf.add(simb);
 		}
 	}
-	
+
 	public String decode(ArrayList<Short> lista) {
-		
-		StringBuilder car = new StringBuilder("");
+
+		//StringBuilder car = new StringBuilder("");
 		ArrayList<Short> num = new ArrayList<Short>();
 		StringBuilder resultado = new StringBuilder("");
 		int posicion;
-		//System.out.println(lista.toString());
-		
-		for(int i=0; i<lista.size(); i++) {
-			
-			if((i+1)%2 == 0 && i!= 0) {
+		// System.out.println(lista.toString());
+
+		for (int i = 0; i < lista.size(); i++) {
+
+			if ((i + 1) % this.bloque == 0 && i != 0) {
 				num.add(lista.get(i));
-				posicion = qToInt(11,num);
+				posicion = qToInt(this.q, num);
 				resultado.append(this.alf.get(posicion));
 				num = new ArrayList<Short>();
-			}else {
+			} else {
 				num.add(lista.get(i));
 			}
-			
+
 		}
-		
+
 		return resultado.toString();
 	}
-	
+
 	private int qToInt(int q, ArrayList<Short> array) {
-		
+
 		int resultado = 0;
-		System.out.println(array.toString());
+		// System.out.println(array.toString());
 		Collections.reverse(array);
-		for(int i=array.size()-1; i>=0; i--) {
+		for (int i = array.size() - 1; i >= 0; i--) {
 			resultado += Math.pow(q, i) * Integer.valueOf(array.get(i));
 		}
-		System.out.println(resultado);
+		// System.out.println(resultado);
 		return resultado;
-		
+
 	}
 }
